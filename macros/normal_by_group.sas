@@ -17,7 +17,7 @@
   Processing steps:
     1. Sort input data by GROUP.
     2. Use PROC UNIVARIATE with NORMAL option by group.
-    3. Capture all tests into OUTTEST.
+    3. Capture all normality tests into OUTTEST.
     4. Build OUTSW summary dataset with decision flags.
     5. Print OUTSW for quick review.
 
@@ -27,7 +27,9 @@
     Listing    Prints OUTSW to the current output destination.
 
   Notes:
-    - This version produces no plots.
+    - This version keeps all normality tests in the output.
+    - Descriptive output such as Moments and Basic Measures is suppressed from the listing
+      to keep the report focused and compact.
     - Missing GROUP values are treated as their own group level unless filtered.
 =============================================================================================*/
 
@@ -42,22 +44,26 @@
 
   %local _outtest _outsw _alphalabel;
 
-  %let _outtest = %sysfunc(coalescec(&outtest, work._norm_tests_&var));
-  %let _outsw   = %sysfunc(coalescec(&outsw,   work._norm_summary_&var));
+  %let _outtest   = %sysfunc(coalescec(&outtest, work._norm_tests_&var));
+  %let _outsw     = %sysfunc(coalescec(&outsw,   work._norm_summary_&var));
   %let _alphalabel = %sysfunc(putn(&alpha, best.));
 
+  /* Sort data for BY-processing */
   proc sort data=&data out=_norm_src_;
     by &group;
   run;
 
+  /* Run all normality tests by group and capture output */
   proc univariate data=_norm_src_ normal;
     by &group;
     var &var;
 
-    ods select Moments BasicMeasures TestsForNormality;
+    /* Keep listing focused on the tests only */
+    ods select TestsForNormality;
     ods output TestsForNormality=&_outtest;
   run;
 
+  /* Build a clean summary table */
   data &_outsw;
     set &_outtest(rename=(Stat=Statistic));
 
@@ -80,11 +86,11 @@
 
     label
       &group      = "Group"
-      Test        = "Test"
-      Statistic   = "Statistic/W"
+      Test        = "Normality Test"
+      Statistic   = "Test Statistic"
       pValue      = "p-value"
-      Conclusion  = "Decision"
-      Normal_Flag = "Normal (1=yes)";
+      Conclusion  = "Decision at alpha=&_alphalabel"
+      Normal_Flag = "Do Not Reject (1=yes)";
   run;
 
   title "Normality Tests by &group for &var";
