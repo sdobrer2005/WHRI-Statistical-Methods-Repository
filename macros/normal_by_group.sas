@@ -1,7 +1,8 @@
 /*=============================================================================================
   Macro:     NORMAL_BY_GROUP
   Purpose:   Run normality tests for one numeric variable within groups, and return both
-             the full set of test results and a simplified summary with decision flags.
+             the full set of test results and a simplified summary with decision flags,
+             plus a compact descriptive statistics table.
 
   Inputs:
     DATA=      Input dataset.
@@ -13,11 +14,14 @@
                per test per group). Defaults to WORK._NORM_TESTS_<var>.
     OUTSW=     (Optional) Output dataset with summary table and decision rule applied.
                Defaults to WORK._NORM_SUMMARY_<var>.
+    OUTDESC=   (Optional) Output dataset with descriptive statistics by group.
+               Defaults to WORK._DESC_<var>.
 
   Outputs:
     OUTTEST    One row per test per group with statistics and p-values.
     OUTSW      Simplified summary with decision rule applied at α=ALPHA.
-    Listing    Prints OUTSW to the current output destination.
+    OUTDESC    Descriptive statistics by group.
+    Listing    Prints OUTDESC and OUTSW to the current output destination.
 
   Notes:
     - All normality tests are retained in the output dataset.
@@ -43,7 +47,7 @@
   %let _alphalabel = %sysfunc(putn(&alpha, best.));
 
   /*========================
-    Sort data
+    Sort data for BY-processing
   ========================*/
   proc sort data=&data out=_norm_src_;
     by &group;
@@ -110,10 +114,7 @@
   run;
 
   data &_outdesc;
-    set _desc_raw_;
-
-    /* Remove overall row */
-    if _TYPE_=1;
+    set _desc_raw_(drop=_TYPE_ _FREQ_);
 
     IQR = Q3 - Q1;
 
@@ -135,7 +136,6 @@
   /*========================
     PRINT OUTPUT
   ========================*/
-
   title "Descriptive Statistics by &group for &var";
   proc print data=&_outdesc noobs label;
   run;
