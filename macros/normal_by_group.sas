@@ -14,22 +14,14 @@
     OUTSW=     (Optional) Output dataset with summary table and decision rule applied.
                Defaults to WORK._NORM_SUMMARY_<var>.
 
-  Processing steps:
-    1. Sort input data by GROUP.
-    2. Use PROC UNIVARIATE with NORMAL option by group.
-    3. Capture all normality tests into OUTTEST.
-    4. Build OUTSW summary dataset with decision flags.
-    5. Print OUTSW for quick review.
-
   Outputs:
     OUTTEST    One row per test per group with statistics and p-values.
     OUTSW      Simplified summary with decision rule applied at α=ALPHA.
     Listing    Prints OUTSW to the current output destination.
 
   Notes:
-    - This version keeps all normality tests in the output.
-    - Descriptive output such as Moments and Basic Measures is suppressed from the listing
-      to keep the report focused and compact.
+    - All normality tests are retained in the output dataset.
+    - Printed PROC UNIVARIATE output is suppressed to keep the report compact.
     - Missing GROUP values are treated as their own group level unless filtered.
 =============================================================================================*/
 
@@ -44,8 +36,8 @@
 
   %local _outtest _outsw _alphalabel;
 
-  %let _outtest   = %sysfunc(coalescec(&outtest, work._norm_tests_&var));
-  %let _outsw     = %sysfunc(coalescec(&outsw,   work._norm_summary_&var));
+  %let _outtest    = %sysfunc(coalescec(&outtest, work._norm_tests_&var));
+  %let _outsw      = %sysfunc(coalescec(&outsw,   work._norm_summary_&var));
   %let _alphalabel = %sysfunc(putn(&alpha, best.));
 
   /* Sort data for BY-processing */
@@ -53,17 +45,16 @@
     by &group;
   run;
 
-  /* Run all normality tests by group and capture output */
+  /* Run normality tests by group and capture output without printing full PROC UNIVARIATE tables */
+  ods exclude all;
   proc univariate data=_norm_src_ normal;
     by &group;
     var &var;
-
-    /* Keep listing focused on the tests only */
-    ods select TestsForNormality;
     ods output TestsForNormality=&_outtest;
   run;
+  ods exclude none;
 
-  /* Build a clean summary table */
+  /* Build summary table */
   data &_outsw;
     set &_outtest(rename=(Stat=Statistic));
 
