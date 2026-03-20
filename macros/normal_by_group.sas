@@ -31,21 +31,27 @@
   group=,
   alpha=0.05,
   outtest=,
-  outsw=
+  outsw=,
+  outdesc=
 );
 
-  %local _outtest _outsw _alphalabel;
+  %local _outtest _outsw _outdesc _alphalabel;
 
   %let _outtest    = %sysfunc(coalescec(&outtest, work._norm_tests_&var));
   %let _outsw      = %sysfunc(coalescec(&outsw,   work._norm_summary_&var));
+  %let _outdesc    = %sysfunc(coalescec(&outdesc, work._desc_&var));
   %let _alphalabel = %sysfunc(putn(&alpha, best.));
 
-  /* Sort data for BY-processing */
+  /*========================
+    Sort data
+  ========================*/
   proc sort data=&data out=_norm_src_;
     by &group;
   run;
 
-  /* Run normality tests by group and capture output without printing full PROC UNIVARIATE tables */
+  /*========================
+    NORMALITY TESTS
+  ========================*/
   ods exclude all;
   proc univariate data=_norm_src_ normal;
     by &group;
@@ -54,7 +60,9 @@
   run;
   ods exclude none;
 
-  /* Build summary table */
+  /*========================
+    SUMMARY OF TESTS
+  ========================*/
   data &_outsw;
     set &_outtest(rename=(Stat=Statistic));
 
@@ -80,13 +88,62 @@
       Test        = "Normality Test"
       Statistic   = "Test Statistic"
       pValue      = "p-value"
-      Conclusion  = "Decision at alpha=&_alphalabel"
+      Conclusion  = "Decision (alpha=&_alphalabel)"
       Normal_Flag = "Do Not Reject (1=yes)";
+  run;
+
+  /*========================
+    DESCRIPTIVE STATISTICS
+  ========================*/
+  proc means data=_norm_src_ n mean std median min max q1 q3 noprint;
+    by &group;
+    var &var;
+    output out=_desc_raw_
+      n=N
+      mean=Mean
+      std=StdDev
+      median=Median
+      min=Min
+      max=Max
+      q1=Q1
+      q3=Q3;
+  run;
+
+  data &_outdesc;
+    set _desc_raw_;
+
+    /* Remove overall row */
+    if _TYPE_=1;
+
+    IQR = Q3 - Q1;
+
+    keep &group N Mean StdDev Median Min Max Q1 Q3 IQR;
+
+    label
+      &group = "Group"
+      N      = "N"
+      Mean   = "Mean"
+      StdDev = "Std Dev"
+      Median = "Median"
+      Min    = "Min"
+      Max    = "Max"
+      Q1     = "Q1"
+      Q3     = "Q3"
+      IQR    = "IQR";
+  run;
+
+  /*========================
+    PRINT OUTPUT
+  ========================*/
+
+  title "Descriptive Statistics by &group for &var";
+  proc print data=&_outdesc noobs label;
   run;
 
   title "Normality Tests by &group for &var";
   proc print data=&_outsw noobs label;
   run;
+
   title;
 
 %mend normal_by_group;
