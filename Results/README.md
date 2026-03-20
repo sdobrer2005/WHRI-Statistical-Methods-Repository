@@ -3,9 +3,12 @@ This folder contains output and interpretation of the independent two-sample t-t
 
 ## Folders
 
-Output 
+### Output 
 includes all output produced by the program exported to R
 Please note that preliminary modified tables are inlcuded here as well. Only final tables for putblication will be saved in the Tables or Other folders
+
+### Docs
+Includes all relevant for interpreting results documents
 
 # Documents included:
 
