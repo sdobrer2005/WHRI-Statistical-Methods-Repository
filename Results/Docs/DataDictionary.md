@@ -28,8 +28,8 @@ Kurtosis measures the heaviness of the tails of a distribution relative to a nor
 
 **Interpretation:**
 - Kurtosis ≈ 0 → similar to normal distribution (mesokurtic)  
-- Kurtosis > 0 → heavier tails (leptokurtic)  
-- Kurtosis < 0 → lighter tails (platykurtic)  
+- Kurtosis > 0 → heavier tails (leptokurtic - distribution with heavier tails than normal)  
+- Kurtosis < 0 → lighter tails (platykurtic - distribution with lighter tails than normal)  
 
 **Guidelines (rule of thumb):**
 - |Kurtosis| < 1 → approximately normal tail behavior  
