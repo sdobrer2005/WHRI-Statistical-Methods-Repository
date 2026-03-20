@@ -1,6 +1,12 @@
 # Results – Independent Two-Sample t-test
 This folder contains output and interpretation of the independent two-sample t-test analysis.
 
+# Folders
+
+Output 
+includes all output produced by the program exported to R
+Please note that preliminary modified tables are inlcuded here as well. Only final tables for putblication will be saved in the Tables or Other folders
+
 # Documents included:
 
 Normality_results - readme document for the normality assumption check
