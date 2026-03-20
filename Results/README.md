@@ -1,7 +1,7 @@
 # Results – Independent Two-Sample t-test
 This folder contains output and interpretation of the independent two-sample t-test analysis.
 
-# Folders
+## Folders
 
 Output 
 includes all output produced by the program exported to R
