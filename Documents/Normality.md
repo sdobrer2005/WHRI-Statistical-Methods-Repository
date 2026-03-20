@@ -68,8 +68,9 @@ Normality tests are inherently sensitive to sample size:
 - In small samples, meaningful deviations may not be detected  
 
 Therefore, statistical test results should be interpreted alongside descriptive statistics and, where appropriate, graphical diagnostics.
-https://documentation.sas.com/doc/en/pgmsascdc/v_073/procstat/procstat_univariate_details53.htm
 
 ## Additional Resources
 
 Detailed theoretical background and implementation specifics for each test are available in standard statistical references and software documentation.
+https://documentation.sas.com/doc/en/pgmsascdc/v_073/procstat/procstat_univariate_details53.htm
+
