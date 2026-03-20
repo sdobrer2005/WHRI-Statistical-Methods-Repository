@@ -1,28 +1,77 @@
-Example-in-SAS
-This rasperatory includes codes in SAS that will help you to perform your own analysis on specific data set
+## About
 
-The raspiratory includes sample data sets - publicly available - and detailed code with instructions for all the steps. Most of the programs will include reusable macros that can be applied of your personal data sets.
+This repository is developed and maintained by Sabina Dobrer, P.Stat, Senior Statistician at the Women’s Health Research Institute (WHRI). With over 20 years of experience in biostatistics, epidemiology, and data science, her work focuses on the design, implementation, and standardization of analytical frameworks across clinical, population health, and administrative data.
 
-I. First project includes of implimentation of t-test for two independent samples using publicly availabe data set IRIS
+Her expertise includes advanced statistical modeling, data governance, and the development of reproducible analytical workflows that support methodological rigor, data integrity, and evidence-based decision-making across multidisciplinary research programs.
+# WHRI Statistical Methods Repository
 
-Data set description: The SAS IRIS dataset is a classic example dataset (originally Fisher’s iris data, 1936) that is widely used for demonstrating statistical methods, classification, and visualization. Here’s a summary:
+This repository establishes a standardized framework for the development, implementation, and documentation of statistical analyses within the Women’s Health Research Institute (WHRI). It is designed to support consistency, reproducibility, and methodological rigor across diverse research programs involving clinical, epidemiological, and administrative data.
 
-Structure
+---
 
-Number of observations: 150 Number of variables: 5
+## Analytical Framework
 
-Variables SepalLength (numeric, cm) SepalWidth (numeric, cm) PetalLength (numeric, cm) PetalWidth (numeric, cm)
+The repository reflects an integrated approach to the full analytical lifecycle, from data acquisition to interpretation and knowledge translation. Each method is structured as a self-contained analytical unit, ensuring that all components of the analysis are transparent, reproducible, and aligned with best practices in biostatistics and data governance.
 
-Species (categorical: Setosa, Versicolor, Virginica)
+This framework supports:
+- Standardization of analytical workflows across projects  
+- Clear documentation of assumptions, methods, and results  
+- Reproducibility of statistical analyses  
+- Scalability across multiple research domains and datasets  
 
-Key Features Each species has 50 observations. Setosa is linearly separable from the other two species. Versicolor and Virginica overlap somewhat, making them useful for demonstrating classification methods. Petal length and width provide stronger discrimination between species compared to sepal measurements.
+---
 
-The most important part of t-test use is assumptions validations
+## Standardization of Analysis
 
-Independence of observations: The two groups are independent (no overlap in subjects, no repeated measures). Observations within each group are independent.
+To ensure consistency and quality, all methods follow a common structure:
 
-Scale of measurement: The dependent variable is continuous (interval or ratio).
+- `data/` – input datasets used in the analysis  
+- `macros/` – SAS code and reusable analytical components  
+- `Results/` – statistical outputs and structured interpretation  
+- `docs/` – supporting documentation, including data definitions and methodological notes  
 
-Normality: Each group’s outcome variable is approximately normally distributed. Assessed via plots (histogram, Q–Q plot) or tests (Shapiro–Wilk, Kolmogorov–Smirnov). Mild deviations are usually fine, especially if sample sizes are moderate/large (Central Limit Theorem).
+This standardized approach enables:
+- Efficient onboarding of new analysts and collaborators  
+- Reuse of validated analytical components  
+- Consistent interpretation and reporting across studies  
+- Alignment with data governance, documentation, and quality assurance practices  
 
-Homogeneity of variances: Note the t-test macro would look for the output of the F-test and will choose appropriate p-value from the t-test output. The population variances of the two groups are equal. Test with Levene’s test or F-test. If unequal → use Welch’s t-test, which relaxes this assumption.
+---
+
+## Scope and Application
+
+The repository supports a wide range of analytical approaches, including descriptive statistics, hypothesis testing, regression modeling, and advanced methods applied to longitudinal, clinical, and population health data.
+
+The initial implementation includes:
+- Independent two-sample t-test  
+  (see branch: `T-test-for-two-independent-samples`)
+
+Additional methods will be developed and integrated following the same framework.
+
+---
+
+## Data Governance and Reproducibility
+
+This repository aligns with principles of:
+- Data integrity and quality assurance  
+- Transparent and auditable analytical processes  
+- Structured documentation across the data lifecycle  
+- Responsible use of sensitive and linked data  
+
+All analyses are designed to support reproducible research and consistent reporting standards.
+
+---
+
+## Purpose
+
+This repository is intended to:
+- Standardize statistical analysis practices within WHRI  
+- Provide a reusable framework for analytical workflows  
+- Support training and capacity building in applied biostatistics  
+- Facilitate collaboration across multidisciplinary research teams  
+
+---
+
+## Software
+
+All analyses are conducted using SAS.
