@@ -25,6 +25,7 @@ Skewness helps assess whether the normality assumption is reasonable for paramet
 
 **Definition:**  
 Kurtosis measures the heaviness of the tails of a distribution relative to a normal distribution.
+For the SAS output the excess kurtosis is used
 
 **Interpretation:**
 - Kurtosis ≈ 0 → similar to normal distribution (mesokurtic)  
