@@ -1,8 +1,9 @@
 # Results – Independent Two-Sample t-test
 This folder contains output and interpretation of the independent two-sample t-test analysis.
 
-#Documents included:
+# Documents included:
 
+Normality_results - readme document for the normality assumption check
 normality_raw_report - output from proc univariate SAS
 normality_summary_report - summary of the raw output in readable tables
 normality_raw_report_note - document with my explanation for the raw output
