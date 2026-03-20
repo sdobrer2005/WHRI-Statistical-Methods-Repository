@@ -52,4 +52,4 @@ Formal statistical tests were used to assess the assumption of normality:
 **Interpretation:**
 - Null hypothesis: data follow a normal distribution  
 - p-value > 0.05 → no evidence against normality  
-- p-value ≤ 0.05 →
+- p-value ≤ 0.05 → evidence against normality, suggesting deviation from a normal distribution
