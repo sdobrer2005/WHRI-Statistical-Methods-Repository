@@ -76,15 +76,17 @@
       Normal_Flag = 1;
     end;
 
-    keep &group Test Statistic pValue Conclusion Normal_Flag;
+    keep &group Test Stat pValue Conclusion Normal_Flag;
 
     label
       &group      = "Group"
       Test        = "Test"
-      Statistic   = "Statistic/W"
+      Stat   = "Statistic/W"
       pValue      = "p-value"
       Conclusion  = "Decision"
       Normal_Flag = "Normal (1=yes)";
+
+      rename stat=Statistic;
   run;
 
   title "Normality Tests by &group for &var";
