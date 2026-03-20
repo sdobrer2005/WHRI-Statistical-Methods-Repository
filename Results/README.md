@@ -21,7 +21,7 @@ This folder will include:
 ## Interpretation
 There will be two sets of files
 Set 1: Output as created by program
-Set 2: Same document but with notes explaining how to read output (SAS or R)
+Set 2: Same document but with notes explaining how to read output (SAS or R). This file will have the same name as file in Set 1 but with _note
 
 ## Notes
 All analyses were conducted using SAS.
