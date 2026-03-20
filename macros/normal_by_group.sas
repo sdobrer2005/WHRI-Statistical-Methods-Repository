@@ -59,7 +59,7 @@
   run;
 
   data &_outsw;
-    set &_outtest;
+    set &_outtest(rename=(Stat=Statistic));
 
     length Conclusion $50 Normal_Flag 8.;
 
@@ -76,17 +76,15 @@
       Normal_Flag = 1;
     end;
 
-    keep &group Test Stat pValue Conclusion Normal_Flag;
+    keep &group Test Statistic pValue Conclusion Normal_Flag;
 
     label
       &group      = "Group"
       Test        = "Test"
-      Stat   = "Statistic/W"
+      Statistic   = "Statistic/W"
       pValue      = "p-value"
       Conclusion  = "Decision"
       Normal_Flag = "Normal (1=yes)";
-
-      rename stat=Statistic;
   run;
 
   title "Normality Tests by &group for &var";
