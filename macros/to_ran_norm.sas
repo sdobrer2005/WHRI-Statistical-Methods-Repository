@@ -1,8 +1,8 @@
-/*=============================================================================================
+/*============================================================================================+
   Macro:     TO_RUN
   Purpose:   Loop over a list of numeric variables, run normality tests within groups using
              %NORMAL_BY_GROUP, and then produce a Word report with both the summary tables
-             and diagnostic plots (histogram + Q–Q plot).
+             and diagnostic plots (histogram + Qâ€“Q plot).
 
   Workflow:
     1. For each variable in &NORM:
@@ -16,7 +16,7 @@
          - Derives the matching group level from &STRATA (positionally).
          - Runs PROC UNIVARIATE twice with WHERE=(&group="&level"):
               * Histogram of the variable for that group (with normal overlay).
-              * Q–Q plot of the variable for that group (with normal reference).
+              * Qâ€“Q plot of the variable for that group (with normal reference).
          - Uses ODS SELECT so only the figures print, not the full UNIVARIATE output.
     5. Closes the Word destination.
 
@@ -32,13 +32,13 @@
     - Word file (&OUTDOC) with, per variable:
         * A formatted summary table of normality tests.
         * A histogram (per variable/group).
-        * A Q–Q plot (per variable/group).
+        * A Qâ€“Q plot (per variable/group).
     - WORK datasets Norm_sum_<var> (kept) with decision summaries.
 
   Notes:
     - This version expects that &STRATA and &NORM are aligned in length and order.
       Example: the i-th variable in &NORM is paired with the i-th group in &STRATA.
-    - Each variable’s results appear on a separate page in the Word file.
+    - Each variableâ€™s results appear on a separate page in the Word file.
     - Figures are produced one per group (not combined across groups).
 ===========================================================================;
 
@@ -90,9 +90,9 @@ footnote j=l "Generated: &sysdate9 at &systime";
       histogram &var / normal kernel;
     run;
 
-    * Q–Q plot ;
+    * Qâ€“Q plot ;
     ods select QQPlot;
-    title "Q–Q Plot of &var for &group=&level";
+    title "Qâ€“Q Plot of &var for &group=&level";
     proc univariate data=work.iris(where=(&group="&level")) normal;
       var &var;
       qqplot &var / normal(mu=est sigma=est);
