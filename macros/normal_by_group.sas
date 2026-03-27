@@ -1,4 +1,4 @@
-/*=============================================================================================
+/*============================================================================================+
   Macro:     NORMAL_BY_GROUP
   Purpose:   Run normality tests for one numeric variable within groups and print either:
              1) original SAS raw output from PROC UNIVARIATE, including plots
