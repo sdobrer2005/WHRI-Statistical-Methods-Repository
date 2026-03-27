@@ -20,6 +20,7 @@
   ods graphics on / width=6in height=4in;
 
   title "Distribution Plots for &var by &group";
+    ods select Histogram QQPlot;
 
   proc univariate data=_fig_src_ normal;
     by &group;
