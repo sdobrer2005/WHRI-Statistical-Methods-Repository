@@ -17,6 +17,9 @@ normality_raw_report - output from proc univariate SAS
 normality_summary_report - summary of the raw output in readable tables
 normality_raw_report_note - document with my explanation for the raw output
 normality_summary_report_note - document with my explanation for the output
+normality_figures_report - visualization of the results for normality assumption
+normality_figures_report_note - document with my explanation for the figures output
+
 
 ## Data
 - Dataset: IRIS (public dataset)
