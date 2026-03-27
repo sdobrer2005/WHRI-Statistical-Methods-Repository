@@ -1,7 +1,7 @@
 /*=============================================================================================
   Macro:     NORMAL_BY_GROUP
   Purpose:   Run normality tests for one numeric variable within groups and print either:
-             1) original SAS raw output from PROC UNIVARIATE
+             1) original SAS raw output from PROC UNIVARIATE, including plots
              2) clean descriptive statistics table + clean normality summary table
              3) or both
 
@@ -17,7 +17,7 @@
 
   Outputs:
     OUTTEST    One row per test per group with statistics and p-values.
-    OUTSW      Simplified summary with decision rule applied at α=ALPHA.
+    OUTSW      Simplified summary with decision rule applied at alpha=ALPHA.
     OUTDESC    Descriptive statistics by group.
     Listing    Prints output according to MODE.
 =============================================================================================*/
@@ -41,25 +41,30 @@
   %let _alphalabel = %sysfunc(putn(&alpha, best.));
   %let _mode       = %upcase(&mode);
 
-  /* Sort data for BY-processing */
   proc sort data=&data out=_norm_src_;
     by &group;
   run;
 
-  /*========================================================
-    Always create the test dataset
-  ========================================================*/
   %if &_mode = RAW or &_mode = ALL %then %do;
+
+    ods graphics on;
+
     title "Raw SAS Output: PROC UNIVARIATE for &var by &group";
 
     proc univariate data=_norm_src_ normal;
       by &group;
       var &var;
-      ods select Moments BasicMeasures TestsForNormality;
+
+      ods select Moments BasicMeasures Quantiles ExtremeObs TestsForNormality;
       ods output TestsForNormality=&_outtest;
+
+      histogram &var / normal kernel;
+      qqplot &var / normal(mu=est sigma=est);
     run;
 
     title;
+    ods graphics off;
+
   %end;
   %else %do;
     ods exclude all;
@@ -71,9 +76,6 @@
     ods exclude none;
   %end;
 
-  /*========================================================
-    Create clean normality summary dataset
-  ========================================================*/
   data &_outsw;
     set &_outtest(rename=(Stat=Statistic));
 
@@ -103,9 +105,6 @@
       Normal_Flag = "Do Not Reject (1=yes)";
   run;
 
-  /*========================================================
-    Create descriptive statistics dataset
-  ========================================================*/
   proc means data=_norm_src_ n mean std median min max q1 q3 noprint;
     by &group;
     var &var;
@@ -123,9 +122,10 @@
   data &_outdesc;
     set _desc_raw_(drop=_TYPE_ _FREQ_);
 
-    IQR = Q3 - Q1;
+    IQR   = Q3 - Q1;
+    Range = Max - Min;
 
-    keep &group N Mean StdDev Median Min Max Q1 Q3 IQR;
+    keep &group N Mean StdDev Median Min Max Range Q1 Q3 IQR;
 
     label
       &group = "Group"
@@ -135,22 +135,22 @@
       Median = "Median"
       Min    = "Min"
       Max    = "Max"
+      Range  = "Range"
       Q1     = "Q1"
       Q3     = "Q3"
       IQR    = "IQR";
   run;
 
-  /*========================================================
-    Print clean output when requested
-  ========================================================*/
   %if &_mode = CLEAN or &_mode = ALL %then %do;
 
     title "Descriptive Statistics by &group for &var";
     proc print data=&_outdesc noobs label;
+      format Mean StdDev Median Min Max Range Q1 Q3 IQR 12.2;
     run;
 
     title "Normality Summary by &group for &var";
     proc print data=&_outsw noobs label;
+      format Statistic 12.4 pValue pvalue6.4;
     run;
 
     title;
