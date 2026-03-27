@@ -1,5 +1,16 @@
 # 01. Normality Assessment
 
+## Summary
+The distribution of continuous variables (sepal length, sepal width, and petal length) was assessed within each species to evaluate the assumption of normality.
+
+For each variable, descriptive statistics were calculated, including mean, standard deviation, median, interquartile range, and range. These measures were used to examine central tendency and variability within groups.
+
+Formal tests of normality were conducted using the Shapiro–Wilk test. Additional tests available within the same framework (e.g., Kolmogorov–Smirnov, Cramér–von Mises, and Anderson–Darling) were also considered to provide a comprehensive assessment.
+
+Graphical diagnostics were used to complement formal testing. Histograms with overlaid kernel and normal density curves were generated to evaluate the overall shape of the distributions. Quantile–quantile (Q–Q) plots were used to assess agreement between the observed data and the theoretical normal distribution.
+
+Assessment of normality was based on the combined interpretation of descriptive statistics, formal test results, and graphical diagnostics.
+
 ## Overview
 
 Assessment of normality is a fundamental step in the evaluation of continuous variables, particularly when parametric statistical methods are considered. The objective is to determine whether the observed data are consistent with a normal (Gaussian) distribution.
