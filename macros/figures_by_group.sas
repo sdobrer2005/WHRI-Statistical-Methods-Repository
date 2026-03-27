@@ -29,7 +29,7 @@
     histogram &var / normal kernel;
     qqplot &var / normal(mu=est sigma=est);
   run;
-
+  ods select all;
   title;
   ods graphics off;
 
